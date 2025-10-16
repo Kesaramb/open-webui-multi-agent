@@ -4,7 +4,7 @@ services:
     env: docker
     dockerfilePath: ./Dockerfile
     dockerContext: .
-    plan: starter  # $7/month - upgrade to standard if needed
+    plan: standard  # $25/month with 2GB RAM (needed for Open WebUI)
 
     # Persistent storage for database, uploads, and models
     disk:
@@ -32,17 +32,25 @@ services:
       - key: WEBUI_SECRET_KEY
         generateValue: true
 
+      # Disable memory-intensive features for 512MB plan
       - key: ENABLE_RAG
-        value: "true"
+        value: "false"
 
       - key: ENABLE_WEB_SEARCH
-        value: "true"
+        value: "false"
 
       - key: ENABLE_IMAGE_GENERATION
-        value: "true"
+        value: "false"
 
       - key: ENABLE_VOICE
-        value: "true"
+        value: "false"
+
+      # Disable embedding models to save memory
+      - key: RAG_EMBEDDING_ENGINE
+        value: ""
+
+      - key: RAG_EMBEDDING_MODEL
+        value: ""
 
       # Server Configuration
       - key: PORT
