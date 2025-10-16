@@ -7,9 +7,6 @@ WORKDIR /app
 # Copy custom functions
 COPY functions/ /app/backend/functions/
 
-# Copy configuration files
-COPY config.yaml /app/backend/data/config.yaml 2>/dev/null || true
-
 # Expose port
 EXPOSE 8080
 
