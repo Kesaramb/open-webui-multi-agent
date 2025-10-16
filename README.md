@@ -1,7 +1,9 @@
-# Open WebUI Multi-Agent Workspace
-## Digital Media Company Setup
+# 🏭 BrandFactory - AI Multi-Agent Workspace
+## Powered by Open WebUI | Custom-Branded for Digital Media
 
-This is a fully configured multi-agent workspace using Open WebUI for digital media operations.
+**BrandFactory** is your fully configured multi-agent AI workspace designed for digital media operations.
+
+**Live at:** https://brandfactory.onrender.com
 
 ## Features
 

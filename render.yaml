@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: open-webui-multi-agent
+    name: brandfactory
     env: docker
     dockerfilePath: ./Dockerfile
     dockerContext: .
@@ -27,6 +27,13 @@ services:
 
       - key: N8N_API_KEY
         value: ""
+
+      # BrandFactory Branding Configuration
+      - key: WEBUI_NAME
+        value: "BrandFactory"
+
+      - key: WEBUI_URL
+        value: ""  # Will be set by Render
 
       # Open WebUI Configuration
       - key: WEBUI_SECRET_KEY
