@@ -1,0 +1,188 @@
+# Open WebUI Multi-Agent Configuration
+# Digital Media Company Setup
+
+# Server Configuration
+server:
+  host: "0.0.0.0"
+  port: 8080
+
+# Database Configuration
+database:
+  engine: "sqlite"  # or postgresql/mysql for production
+  path: "./data/webui.db"
+
+# n8n Integration
+n8n:
+  enabled: true
+  base_url: "http://localhost:5678"  # Your n8n instance URL
+  webhooks:
+    - name: "content_generation"
+      endpoint: "/webhook/content-gen"
+      description: "Webhook for automated content generation workflows"
+
+    - name: "social_media_scheduler"
+      endpoint: "/webhook/social-scheduler"
+      description: "Schedule and manage social media posts"
+
+    - name: "analytics_processor"
+      endpoint: "/webhook/analytics"
+      description: "Process analytics data and generate reports"
+
+    - name: "media_processor"
+      endpoint: "/webhook/media-process"
+      description: "Process and optimize media files"
+
+# Digital Twins & Personas Configuration
+personas:
+  enabled: true
+  storage_path: "./data/personas"
+
+  # Pre-configured personas for digital media company
+  default_personas:
+    - name: "Content Strategist"
+      role: "content_strategy"
+      description: "Expert in content planning, SEO, and audience engagement"
+      system_prompt: |
+        You are an expert content strategist for a digital media company.
+        Focus on: content planning, SEO optimization, audience targeting,
+        and engagement strategies. Provide actionable insights and recommendations.
+      model: "gpt-4"  # Can be changed to any supported model
+
+    - name: "Creative Director"
+      role: "creative_direction"
+      description: "Visual storytelling expert and brand consistency guardian"
+      system_prompt: |
+        You are a creative director specializing in digital media.
+        Focus on: visual storytelling, brand identity, design principles,
+        and creative campaign development. Ensure brand consistency.
+      model: "gpt-4"
+
+    - name: "Social Media Manager"
+      role: "social_media"
+      description: "Social media expert and community engagement specialist"
+      system_prompt: |
+        You are a social media manager for a digital media company.
+        Focus on: platform-specific strategies, community engagement,
+        trending topics, and social media analytics. Create engaging content.
+      model: "gpt-4"
+
+    - name: "Video Producer"
+      role: "video_production"
+      description: "Video content expert and production coordinator"
+      system_prompt: |
+        You are a video producer specializing in digital content.
+        Focus on: video scripting, production planning, editing workflows,
+        and platform optimization (YouTube, TikTok, Instagram). Provide technical guidance.
+      model: "gpt-4"
+
+    - name: "Data Analyst"
+      role: "analytics"
+      description: "Analytics expert and insights generator"
+      system_prompt: |
+        You are a data analyst for a digital media company.
+        Focus on: performance metrics, audience insights, trend analysis,
+        and data-driven recommendations. Provide clear, actionable reports.
+      model: "gpt-4"
+
+# Multi-Agent Workspace Configuration
+multi_agent:
+  enabled: true
+  max_concurrent_agents: 5
+  collaboration_mode: "sequential"  # or "parallel" or "hierarchical"
+
+  # Agent workflows
+  workflows:
+    - name: "Content Production Pipeline"
+      description: "Complete content creation workflow from ideation to publication"
+      agents:
+        - "Content Strategist"
+        - "Creative Director"
+        - "Social Media Manager"
+      steps:
+        - agent: "Content Strategist"
+          action: "Generate content ideas and strategy"
+        - agent: "Creative Director"
+          action: "Develop creative concepts and visual direction"
+        - agent: "Social Media Manager"
+          action: "Create platform-specific content and scheduling plan"
+      n8n_trigger: "content_generation"
+
+    - name: "Campaign Development"
+      description: "Develop and plan marketing campaigns"
+      agents:
+        - "Content Strategist"
+        - "Creative Director"
+        - "Data Analyst"
+      n8n_trigger: "analytics_processor"
+
+    - name: "Video Production Workflow"
+      description: "End-to-end video content production"
+      agents:
+        - "Video Producer"
+        - "Creative Director"
+        - "Social Media Manager"
+      n8n_trigger: "media_processor"
+
+# Function Calling - Custom Python Functions
+custom_functions:
+  enabled: true
+  functions_path: "./functions"
+
+  # n8n webhook caller function
+  webhook_functions:
+    - name: "trigger_n8n_workflow"
+      description: "Trigger an n8n workflow via webhook"
+
+    - name: "get_workflow_status"
+      description: "Get the status of an n8n workflow execution"
+
+    - name: "fetch_analytics_data"
+      description: "Fetch analytics data from n8n"
+
+# API Configuration
+api:
+  enabled: true
+  openai_compatible: true
+  authentication:
+    enabled: true
+    jwt_secret: "your-secret-key-here"  # Change in production
+
+# Models Configuration
+models:
+  providers:
+    - name: "openai"
+      api_key: "${OPENAI_API_KEY}"
+      models: ["gpt-4", "gpt-3.5-turbo"]
+
+    - name: "anthropic"
+      api_key: "${ANTHROPIC_API_KEY}"
+      models: ["claude-3-opus", "claude-3-sonnet"]
+
+    - name: "local"
+      type: "ollama"
+      base_url: "http://localhost:11434"
+      models: ["llama2", "mistral"]
+
+# Storage Configuration
+storage:
+  type: "local"  # or "s3", "azure", "gcp"
+  path: "./data/uploads"
+  max_file_size: "50MB"
+
+# Features
+features:
+  rag:
+    enabled: true
+    chunk_size: 1000
+    chunk_overlap: 200
+
+  web_search:
+    enabled: true
+
+  image_generation:
+    enabled: true
+
+  voice:
+    enabled: true
+    stt_engine: "whisper"
+    tts_engine: "elevenlabs"  # or "openai"

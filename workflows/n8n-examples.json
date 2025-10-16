@@ -1,0 +1,359 @@
+{
+  "name": "Open WebUI n8n Workflow Examples",
+  "version": 1,
+  "workflows": [
+    {
+      "name": "Content Generation Workflow",
+      "description": "Automated content generation triggered from Open WebUI",
+      "webhook": "/webhook/content-gen",
+      "nodes": [
+        {
+          "type": "Webhook",
+          "name": "Content Gen Trigger",
+          "parameters": {
+            "path": "content-gen",
+            "method": "POST"
+          },
+          "inputs": {
+            "topic": "string",
+            "content_type": "string",
+            "target_audience": "string",
+            "tone": "string",
+            "additional_context": "string"
+          }
+        },
+        {
+          "type": "OpenAI",
+          "name": "Generate Content",
+          "parameters": {
+            "model": "gpt-4",
+            "prompt": "Generate {{$json.content_type}} content about {{$json.topic}} for {{$json.target_audience}} in a {{$json.tone}} tone. Context: {{$json.additional_context}}"
+          }
+        },
+        {
+          "type": "HTTP Request",
+          "name": "Save to CMS",
+          "parameters": {
+            "method": "POST",
+            "url": "https://your-cms.com/api/content",
+            "body": "{{$json}}"
+          }
+        },
+        {
+          "type": "Respond to Webhook",
+          "name": "Return Result"
+        }
+      ]
+    },
+    {
+      "name": "Social Media Scheduler",
+      "description": "Schedule and publish social media posts",
+      "webhook": "/webhook/social-scheduler",
+      "nodes": [
+        {
+          "type": "Webhook",
+          "name": "Social Scheduler Trigger",
+          "parameters": {
+            "path": "social-scheduler",
+            "method": "POST"
+          },
+          "inputs": {
+            "platform": "string",
+            "content": "string",
+            "schedule_time": "string",
+            "media_urls": "array",
+            "hashtags": "array"
+          }
+        },
+        {
+          "type": "Switch",
+          "name": "Route by Platform",
+          "parameters": {
+            "rules": [
+              {"condition": "platform === 'instagram'", "output": 1},
+              {"condition": "platform === 'twitter'", "output": 2},
+              {"condition": "platform === 'linkedin'", "output": 3},
+              {"condition": "platform === 'facebook'", "output": 4}
+            ]
+          }
+        },
+        {
+          "type": "Instagram",
+          "name": "Post to Instagram",
+          "branch": 1
+        },
+        {
+          "type": "Twitter",
+          "name": "Post to Twitter",
+          "branch": 2
+        },
+        {
+          "type": "LinkedIn",
+          "name": "Post to LinkedIn",
+          "branch": 3
+        },
+        {
+          "type": "Facebook",
+          "name": "Post to Facebook",
+          "branch": 4
+        },
+        {
+          "type": "Google Sheets",
+          "name": "Log Post",
+          "parameters": {
+            "operation": "append",
+            "sheetName": "Social Media Log"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Analytics Reporter",
+      "description": "Fetch and compile analytics from multiple platforms",
+      "webhook": "/webhook/analytics",
+      "nodes": [
+        {
+          "type": "Webhook",
+          "name": "Analytics Trigger",
+          "parameters": {
+            "path": "analytics",
+            "method": "POST"
+          },
+          "inputs": {
+            "date_range": "string",
+            "metrics": "array",
+            "platforms": "array"
+          }
+        },
+        {
+          "type": "Split In Batches",
+          "name": "Split Platforms"
+        },
+        {
+          "type": "Switch",
+          "name": "Platform Router",
+          "parameters": {
+            "rules": [
+              {"condition": "platform === 'instagram'", "output": 1},
+              {"condition": "platform === 'twitter'", "output": 2},
+              {"condition": "platform === 'youtube'", "output": 3},
+              {"condition": "platform === 'linkedin'", "output": 4}
+            ]
+          }
+        },
+        {
+          "type": "HTTP Request",
+          "name": "Instagram Analytics",
+          "branch": 1,
+          "parameters": {
+            "url": "https://graph.facebook.com/v18.0/me/insights",
+            "authentication": "oauth2"
+          }
+        },
+        {
+          "type": "HTTP Request",
+          "name": "Twitter Analytics",
+          "branch": 2,
+          "parameters": {
+            "url": "https://api.twitter.com/2/tweets/metrics",
+            "authentication": "oauth2"
+          }
+        },
+        {
+          "type": "HTTP Request",
+          "name": "YouTube Analytics",
+          "branch": 3,
+          "parameters": {
+            "url": "https://youtubeanalytics.googleapis.com/v2/reports",
+            "authentication": "oauth2"
+          }
+        },
+        {
+          "type": "Merge",
+          "name": "Combine Results"
+        },
+        {
+          "type": "Code",
+          "name": "Process Analytics",
+          "parameters": {
+            "code": "// Calculate totals and trends\nconst items = $input.all();\nconst totals = {\n  total_engagement: 0,\n  total_reach: 0,\n  total_impressions: 0\n};\n\nitems.forEach(item => {\n  totals.total_engagement += item.json.engagement || 0;\n  totals.total_reach += item.json.reach || 0;\n  totals.total_impressions += item.json.impressions || 0;\n});\n\nreturn { json: { ...totals, platforms: items } };"
+          }
+        },
+        {
+          "type": "OpenAI",
+          "name": "Generate Insights",
+          "parameters": {
+            "model": "gpt-4",
+            "prompt": "Analyze this social media analytics data and provide insights:\n{{JSON.stringify($json)}}"
+          }
+        },
+        {
+          "type": "Google Sheets",
+          "name": "Save Report"
+        },
+        {
+          "type": "Respond to Webhook",
+          "name": "Return Analytics"
+        }
+      ]
+    },
+    {
+      "name": "Media Processor",
+      "description": "Process and optimize media files",
+      "webhook": "/webhook/media-process",
+      "nodes": [
+        {
+          "type": "Webhook",
+          "name": "Media Process Trigger",
+          "parameters": {
+            "path": "media-process",
+            "method": "POST"
+          },
+          "inputs": {
+            "media_url": "string",
+            "operations": "array",
+            "output_format": "string"
+          }
+        },
+        {
+          "type": "HTTP Request",
+          "name": "Download Media",
+          "parameters": {
+            "method": "GET",
+            "url": "{{$json.media_url}}",
+            "responseFormat": "file"
+          }
+        },
+        {
+          "type": "Split In Batches",
+          "name": "Process Operations"
+        },
+        {
+          "type": "Switch",
+          "name": "Operation Type",
+          "parameters": {
+            "rules": [
+              {"condition": "operation === 'resize'", "output": 1},
+              {"condition": "operation === 'compress'", "output": 2},
+              {"condition": "operation === 'watermark'", "output": 3},
+              {"condition": "operation === 'convert'", "output": 4}
+            ]
+          }
+        },
+        {
+          "type": "CloudConvert",
+          "name": "Resize Image",
+          "branch": 1
+        },
+        {
+          "type": "CloudConvert",
+          "name": "Compress",
+          "branch": 2
+        },
+        {
+          "type": "CloudConvert",
+          "name": "Add Watermark",
+          "branch": 3
+        },
+        {
+          "type": "Merge",
+          "name": "Merge Operations"
+        },
+        {
+          "type": "AWS S3",
+          "name": "Upload to Storage",
+          "parameters": {
+            "operation": "upload"
+          }
+        },
+        {
+          "type": "Respond to Webhook",
+          "name": "Return Processed URL"
+        }
+      ]
+    },
+    {
+      "name": "Campaign Automation",
+      "description": "End-to-end campaign creation and execution",
+      "webhook": "/webhook/campaign",
+      "nodes": [
+        {
+          "type": "Webhook",
+          "name": "Campaign Trigger",
+          "parameters": {
+            "path": "campaign",
+            "method": "POST"
+          },
+          "inputs": {
+            "campaign_name": "string",
+            "campaign_type": "string",
+            "target_audience": "object",
+            "budget": "number",
+            "duration_days": "number"
+          }
+        },
+        {
+          "type": "OpenAI",
+          "name": "Generate Campaign Strategy",
+          "parameters": {
+            "model": "gpt-4",
+            "prompt": "Create a detailed campaign strategy for: {{$json.campaign_name}}"
+          }
+        },
+        {
+          "type": "Code",
+          "name": "Create Content Calendar",
+          "parameters": {
+            "code": "// Generate daily content schedule\nconst duration = $json.duration_days;\nconst calendar = [];\nfor (let i = 0; i < duration; i++) {\n  calendar.push({\n    day: i + 1,\n    content_type: i % 2 === 0 ? 'post' : 'story',\n    platform: ['instagram', 'twitter', 'linkedin'][i % 3]\n  });\n}\nreturn { json: { ...calendar } };"
+          }
+        },
+        {
+          "type": "Loop Over Items",
+          "name": "Process Each Day"
+        },
+        {
+          "type": "HTTP Request",
+          "name": "Generate Content",
+          "parameters": {
+            "method": "POST",
+            "url": "{{$env.N8N_BASE_URL}}/webhook/content-gen"
+          }
+        },
+        {
+          "type": "HTTP Request",
+          "name": "Schedule Post",
+          "parameters": {
+            "method": "POST",
+            "url": "{{$env.N8N_BASE_URL}}/webhook/social-scheduler"
+          }
+        },
+        {
+          "type": "Google Sheets",
+          "name": "Log Campaign"
+        },
+        {
+          "type": "Respond to Webhook",
+          "name": "Return Campaign Plan"
+        }
+      ]
+    }
+  ],
+  "setup_instructions": {
+    "step1": "Import these workflow templates into n8n",
+    "step2": "Configure credentials for each service (OpenAI, social platforms, storage)",
+    "step3": "Update webhook URLs in Open WebUI config",
+    "step4": "Test each webhook individually",
+    "step5": "Integrate with Open WebUI personas"
+  },
+  "required_credentials": [
+    "OpenAI API Key",
+    "Instagram Business Account",
+    "Twitter API Key",
+    "LinkedIn API Key",
+    "Facebook API Key",
+    "YouTube API Key",
+    "AWS S3 or similar storage",
+    "Google Sheets (optional)",
+    "CloudConvert (optional for media processing)"
+  ]
+}

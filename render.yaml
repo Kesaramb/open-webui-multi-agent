@@ -1,0 +1,62 @@
+services:
+  - type: web
+    name: open-webui-multi-agent
+    env: docker
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    plan: starter  # $7/month - upgrade to standard if needed
+
+    # Persistent storage for database, uploads, and models
+    disk:
+      name: openwebui-data
+      mountPath: /app/backend/data
+      sizeGB: 10
+
+    # Environment variables
+    envVars:
+      # API Keys - SET THESE IN RENDER DASHBOARD (keep them secret!)
+      - key: OPENAI_API_KEY
+        sync: false
+
+      - key: ANTHROPIC_API_KEY
+        sync: false
+
+      # N8N Integration
+      - key: N8N_BASE_URL
+        value: https://n8n-zdpc.onrender.com
+
+      - key: N8N_API_KEY
+        value: ""
+
+      # Open WebUI Configuration
+      - key: WEBUI_SECRET_KEY
+        generateValue: true
+
+      - key: ENABLE_RAG
+        value: "true"
+
+      - key: ENABLE_WEB_SEARCH
+        value: "true"
+
+      - key: ENABLE_IMAGE_GENERATION
+        value: "true"
+
+      - key: ENABLE_VOICE
+        value: "true"
+
+      # Server Configuration
+      - key: PORT
+        value: "8080"
+
+      - key: HOST
+        value: "0.0.0.0"
+
+      # Optional: Ollama (if you want local models)
+      - key: OLLAMA_BASE_URL
+        value: ""
+
+    # Health check endpoint
+    healthCheckPath: /health
+
+    # Auto-deploy on git push
+    autoDeploy: true

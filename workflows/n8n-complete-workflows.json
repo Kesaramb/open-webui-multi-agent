@@ -1,0 +1,294 @@
+{
+  "name": "Open WebUI Multi-Agent Workflows",
+  "workflows": [
+    {
+      "name": "Content Generation Pipeline",
+      "nodes": [
+        {
+          "id": "webhook",
+          "name": "Webhook Trigger",
+          "type": "n8n-nodes-base.webhook",
+          "position": [250, 300],
+          "parameters": {
+            "path": "content-generation",
+            "httpMethod": "POST",
+            "responseMode": "responseNode"
+          }
+        },
+        {
+          "id": "openai",
+          "name": "Generate Content",
+          "type": "n8n-nodes-base.openAi",
+          "position": [450, 300],
+          "parameters": {
+            "resource": "text",
+            "operation": "complete",
+            "model": "gpt-4",
+            "prompt": "=Create a {{ $json.body.content_type }} about {{ $json.body.topic }}.\n\nTarget Audience: {{ $json.body.target_audience }}\nTone: {{ $json.body.tone }}\nWord Count: {{ $json.body.word_count }}\nSEO Keywords: {{ $json.body.seo_keywords.join(', ') }}\n\nAdditional Context: {{ $json.body.additional_context }}",
+            "temperature": 0.7,
+            "maxTokens": 2000
+          }
+        },
+        {
+          "id": "format",
+          "name": "Format Response",
+          "type": "n8n-nodes-base.function",
+          "position": [650, 300],
+          "parameters": {
+            "functionCode": "const content = items[0].json.choices[0].text;\nconst metadata = items[0].json.body;\n\nreturn [{\n  json: {\n    success: true,\n    content: content,\n    topic: metadata.topic,\n    content_type: metadata.content_type,\n    word_count: content.split(' ').length,\n    generated_at: new Date().toISOString(),\n    requested_by: metadata.requested_by\n  }\n}];"
+          }
+        },
+        {
+          "id": "response",
+          "name": "Send Response",
+          "type": "n8n-nodes-base.respondToWebhook",
+          "position": [850, 300],
+          "parameters": {
+            "respondWith": "json",
+            "responseBody": "={{ $json }}"
+          }
+        }
+      ],
+      "connections": {
+        "webhook": { "main": [[{ "node": "openai", "type": "main", "index": 0 }]] },
+        "openai": { "main": [[{ "node": "format", "type": "main", "index": 0 }]] },
+        "format": { "main": [[{ "node": "response", "type": "main", "index": 0 }]] }
+      }
+    },
+    {
+      "name": "Social Media Scheduler",
+      "nodes": [
+        {
+          "id": "webhook",
+          "name": "Webhook Trigger",
+          "type": "n8n-nodes-base.webhook",
+          "position": [250, 300],
+          "parameters": {
+            "path": "social-post",
+            "httpMethod": "POST",
+            "responseMode": "responseNode"
+          }
+        },
+        {
+          "id": "route",
+          "name": "Route by Platform",
+          "type": "n8n-nodes-base.switch",
+          "position": [450, 300],
+          "parameters": {
+            "conditions": {
+              "string": [
+                {
+                  "value1": "={{ $json.body.platform }}",
+                  "operation": "equals",
+                  "value2": "instagram"
+                },
+                {
+                  "value1": "={{ $json.body.platform }}",
+                  "operation": "equals",
+                  "value2": "twitter"
+                },
+                {
+                  "value1": "={{ $json.body.platform }}",
+                  "operation": "equals",
+                  "value2": "linkedin"
+                },
+                {
+                  "value1": "={{ $json.body.platform }}",
+                  "operation": "equals",
+                  "value2": "facebook"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "id": "schedule",
+          "name": "Schedule Post",
+          "type": "n8n-nodes-base.function",
+          "position": [650, 300],
+          "parameters": {
+            "functionCode": "const data = items[0].json.body;\nconst scheduleTime = data.schedule_time === 'now' ? new Date() : new Date(data.schedule_time);\n\nreturn [{\n  json: {\n    platform: data.platform,\n    content: data.content,\n    media_urls: data.media_urls,\n    hashtags: data.hashtags,\n    caption: data.caption,\n    scheduled_time: scheduleTime.toISOString(),\n    scheduled_by: data.scheduled_by,\n    status: 'scheduled'\n  }\n}];"
+          }
+        },
+        {
+          "id": "database",
+          "name": "Save to Database",
+          "type": "n8n-nodes-base.function",
+          "position": [850, 300],
+          "parameters": {
+            "functionCode": "// In production, save to your database\n// For now, return success\nreturn [{\n  json: {\n    success: true,\n    message: 'Post scheduled successfully',\n    scheduled_id: Date.now().toString(),\n    ...items[0].json\n  }\n}];"
+          }
+        },
+        {
+          "id": "response",
+          "name": "Send Response",
+          "type": "n8n-nodes-base.respondToWebhook",
+          "position": [1050, 300],
+          "parameters": {
+            "respondWith": "json",
+            "responseBody": "={{ $json }}"
+          }
+        }
+      ],
+      "connections": {
+        "webhook": { "main": [[{ "node": "route", "type": "main", "index": 0 }]] },
+        "route": { "main": [[{ "node": "schedule", "type": "main", "index": 0 }]] },
+        "schedule": { "main": [[{ "node": "database", "type": "main", "index": 0 }]] },
+        "database": { "main": [[{ "node": "response", "type": "main", "index": 0 }]] }
+      }
+    },
+    {
+      "name": "Analytics Fetcher",
+      "nodes": [
+        {
+          "id": "webhook",
+          "name": "Webhook Trigger",
+          "type": "n8n-nodes-base.webhook",
+          "position": [250, 300],
+          "parameters": {
+            "path": "analytics",
+            "httpMethod": "GET",
+            "responseMode": "responseNode"
+          }
+        },
+        {
+          "id": "fetch",
+          "name": "Fetch Data",
+          "type": "n8n-nodes-base.function",
+          "position": [450, 300],
+          "parameters": {
+            "functionCode": "const params = items[0].json.query;\n\n// Mock analytics data\n// In production, fetch from Google Analytics, Meta Business Suite, etc.\nconst analytics = {\n  date_range: params.date_range,\n  platforms: params.platforms || ['all'],\n  metrics: {\n    total_views: 125000,\n    total_engagement: 8500,\n    total_reach: 95000,\n    conversions: 450,\n    engagement_rate: 6.8,\n    top_posts: [\n      {\n        title: 'AI Marketing Trends',\n        views: 15000,\n        engagement: 1200,\n        platform: 'instagram'\n      },\n      {\n        title: 'Digital Strategy Tips',\n        views: 12000,\n        engagement: 950,\n        platform: 'linkedin'\n      }\n    ],\n    platform_breakdown: {\n      instagram: { views: 45000, engagement: 3200 },\n      linkedin: { views: 38000, engagement: 2800 },\n      facebook: { views: 25000, engagement: 1500 },\n      twitter: { views: 17000, engagement: 1000 }\n    }\n  },\n  generated_at: new Date().toISOString()\n};\n\nreturn [{ json: analytics }];"
+          }
+        },
+        {
+          "id": "response",
+          "name": "Send Response",
+          "type": "n8n-nodes-base.respondToWebhook",
+          "position": [650, 300],
+          "parameters": {
+            "respondWith": "json",
+            "responseBody": "={{ $json }}"
+          }
+        }
+      ],
+      "connections": {
+        "webhook": { "main": [[{ "node": "fetch", "type": "main", "index": 0 }]] },
+        "fetch": { "main": [[{ "node": "response", "type": "main", "index": 0 }]] }
+      }
+    },
+    {
+      "name": "Media Processing Pipeline",
+      "nodes": [
+        {
+          "id": "webhook",
+          "name": "Webhook Trigger",
+          "type": "n8n-nodes-base.webhook",
+          "position": [250, 300],
+          "parameters": {
+            "path": "media-process",
+            "httpMethod": "POST",
+            "responseMode": "responseNode"
+          }
+        },
+        {
+          "id": "download",
+          "name": "Download Media",
+          "type": "n8n-nodes-base.httpRequest",
+          "position": [450, 300],
+          "parameters": {
+            "url": "={{ $json.body.media_url }}",
+            "responseFormat": "file"
+          }
+        },
+        {
+          "id": "process",
+          "name": "Process Media",
+          "type": "n8n-nodes-base.function",
+          "position": [650, 300],
+          "parameters": {
+            "functionCode": "// Mock processing\n// In production, use imagemagick, ffmpeg, or cloud services\nconst operations = items[0].json.body.operations;\nconst quality = items[0].json.body.quality;\n\nreturn [{\n  json: {\n    success: true,\n    original_url: items[0].json.body.media_url,\n    processed_url: 'https://cdn.example.com/processed/' + Date.now() + '.jpg',\n    operations_applied: operations,\n    quality: quality,\n    file_size: '2.4 MB',\n    processed_at: new Date().toISOString()\n  }\n}];"
+          }
+        },
+        {
+          "id": "response",
+          "name": "Send Response",
+          "type": "n8n-nodes-base.respondToWebhook",
+          "position": [850, 300],
+          "parameters": {
+            "respondWith": "json",
+            "responseBody": "={{ $json }}"
+          }
+        }
+      ],
+      "connections": {
+        "webhook": { "main": [[{ "node": "download", "type": "main", "index": 0 }]] },
+        "download": { "main": [[{ "node": "process", "type": "main", "index": 0 }]] },
+        "process": { "main": [[{ "node": "response", "type": "main", "index": 0 }]] }
+      }
+    },
+    {
+      "name": "Campaign Manager",
+      "nodes": [
+        {
+          "id": "webhook",
+          "name": "Webhook Trigger",
+          "type": "n8n-nodes-base.webhook",
+          "position": [250, 300],
+          "parameters": {
+            "path": "campaign",
+            "httpMethod": "POST",
+            "responseMode": "responseNode"
+          }
+        },
+        {
+          "id": "validate",
+          "name": "Validate Campaign",
+          "type": "n8n-nodes-base.function",
+          "position": [450, 300],
+          "parameters": {
+            "functionCode": "const campaign = items[0].json.body;\n\n// Validate required fields\nif (!campaign.campaign_name || !campaign.channels || !campaign.target_audience) {\n  throw new Error('Missing required fields');\n}\n\nreturn [{\n  json: {\n    ...campaign,\n    campaign_id: 'CAMP-' + Date.now(),\n    status: 'validated',\n    validated_at: new Date().toISOString()\n  }\n}];"
+          }
+        },
+        {
+          "id": "setup",
+          "name": "Setup Campaign",
+          "type": "n8n-nodes-base.function",
+          "position": [650, 300],
+          "parameters": {
+            "functionCode": "const campaign = items[0].json;\nconst channels = campaign.channels;\n\n// Setup campaign across channels\nconst tasks = channels.map(channel => ({\n  channel,\n  status: 'pending',\n  scheduled_posts: Math.floor(campaign.duration_days * 2),\n  budget_allocated: campaign.budget ? campaign.budget / channels.length : null\n}));\n\nreturn [{\n  json: {\n    campaign_id: campaign.campaign_id,\n    campaign_name: campaign.campaign_name,\n    status: 'active',\n    channels: tasks,\n    start_date: campaign.start_date,\n    end_date: new Date(Date.now() + campaign.duration_days * 24 * 60 * 60 * 1000).toISOString(),\n    created_at: new Date().toISOString()\n  }\n}];"
+          }
+        },
+        {
+          "id": "notify",
+          "name": "Send Notifications",
+          "type": "n8n-nodes-base.function",
+          "position": [850, 300],
+          "parameters": {
+            "functionCode": "// In production, send emails, Slack messages, etc.\nreturn [{\n  json: {\n    success: true,\n    ...items[0].json,\n    notifications_sent: ['email', 'slack'],\n    message: 'Campaign setup complete and active'\n  }\n}];"
+          }
+        },
+        {
+          "id": "response",
+          "name": "Send Response",
+          "type": "n8n-nodes-base.respondToWebhook",
+          "position": [1050, 300],
+          "parameters": {
+            "respondWith": "json",
+            "responseBody": "={{ $json }}"
+          }
+        }
+      ],
+      "connections": {
+        "webhook": { "main": [[{ "node": "validate", "type": "main", "index": 0 }]] },
+        "validate": { "main": [[{ "node": "setup", "type": "main", "index": 0 }]] },
+        "setup": { "main": [[{ "node": "notify", "type": "main", "index": 0 }]] },
+        "notify": { "main": [[{ "node": "response", "type": "main", "index": 0 }]] }
+      }
+    }
+  ],
+  "meta": {
+    "created_by": "Open WebUI Multi-Agent Setup",
+    "version": "1.0.0",
+    "description": "Complete workflow collection for AI persona integrations"
+  }
+}
