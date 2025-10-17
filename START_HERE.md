@@ -23,7 +23,7 @@ Download from: https://www.docker.com/products/docker-desktop
 ```bash
 cd /Users/mac/Projects/open-webui-multi-agent
 
-# Start all services (Open WebUI + n8n + Ollama)
+# Start all services (BrandFactory + n8n + Ollama)
 docker-compose up -d
 
 # Check if everything is running
