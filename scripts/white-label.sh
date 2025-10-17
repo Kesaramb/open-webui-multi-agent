@@ -19,14 +19,14 @@ echo "📝 Replacing 'Open WebUI' with 'BrandFactory'..."
 find $FRONTEND_DIR -type f \( -name "*.js" -o -name "*.html" -o -name "*.css" \) -exec sed -i 's/Open WebUI/BrandFactory/g' {} + 2>/dev/null || true
 
 # Replace instances with different casings
-find $FRONTEND_DIR -type f \( -name "*.js" -o -name "*.html" \) -exec sed -i 's/OpenWebUI/BrandFactory/g' {} + 2>/dev/null || true
-find $FRONTEND_DIR -type f \( -name "*.js" -o -name "*.html" \) -exec sed -i 's/open-webui/brandfactory/g' {} + 2>/dev/null || true
-find $FRONTEND_DIR -type f \( -name "*.js" -o -name "*.html" \) -exec sed -i 's/openwebui/brandfactory/g' {} + 2>/dev/null || true
+find $FRONTEND_DIR -type f \( -name "*.js" -o -name "*.html" -o -name "*.css" \) -exec sed -i 's/OpenWebUI/BrandFactory/g' {} + 2>/dev/null || true
+find $FRONTEND_DIR -type f \( -name "*.js" -o -name "*.html" -o -name "*.css" \) -exec sed -i 's/open-webui/brandfactory/g' {} + 2>/dev/null || true
+find $FRONTEND_DIR -type f \( -name "*.js" -o -name "*.html" -o -name "*.css" \) -exec sed -i 's/openwebui/brandfactory/g' {} + 2>/dev/null || true
 
 # Remove "Powered by" footer text
 echo "🔧 Removing 'Powered by' footer..."
-find $FRONTEND_DIR -type f -name "*.js" -exec sed -i 's/Powered by Open WebUI//g' {} + 2>/dev/null || true
-find $FRONTEND_DIR -type f -name "*.js" -exec sed -i 's/Powered by//g' {} + 2>/dev/null || true
+find $FRONTEND_DIR -type f \( -name "*.js" -o -name "*.css" \) -exec sed -i 's/Powered by Open WebUI//g' {} + 2>/dev/null || true
+find $FRONTEND_DIR -type f \( -name "*.js" -o -name "*.css" \) -exec sed -i 's/Powered by//g' {} + 2>/dev/null || true
 
 # Replace OpenWebUI GitHub links
 echo "🔗 Updating links..."
