@@ -1,6 +1,6 @@
 # 🔑 Connecting OpenAI & Claude Models
 
-Your API keys are already in the `.env` file. Just add them to Open WebUI interface:
+Your API keys are already in the `.env` file. Just add them to BrandFactory interface:
 
 ## Quick Setup (2 minutes)
 

@@ -1,5 +1,5 @@
 # Quick Start Guide
-## Open WebUI Multi-Agent Workspace for Digital Media Company
+## BrandFactory Multi-Agent Workspace for Digital Media Company
 
 ## Installation Options
 
@@ -14,18 +14,18 @@ cd /Users/mac/Projects/open-webui-multi-agent
 cp .env.template .env
 # Edit .env and add your API keys
 
-# Start all services (Open WebUI + n8n + Ollama)
+# Start all services (BrandFactory + n8n + Ollama)
 docker-compose up -d
 
 # Check status
 docker-compose ps
 
 # View logs
-docker-compose logs -f open-webui
+docker-compose logs -f brandfactory
 ```
 
 Access the applications:
-- Open WebUI: http://localhost:8080
+- BrandFactory: http://localhost:8080
 - n8n: http://localhost:5678 (username: admin, password: changeme)
 - Ollama: http://localhost:11434
 
@@ -40,11 +40,9 @@ cd /Users/mac/Projects/open-webui-multi-agent
 cp .env.template .env
 # Edit .env with your API keys
 
-# Install Open WebUI (retry if it times out)
-pip install open-webui --timeout=1000
-
-# Start Open WebUI
-./start.sh
+# Build and run with Docker
+docker build -t brandfactory .
+docker run -p 8080:8080 brandfactory
 ```
 
 For n8n (in a separate terminal):
@@ -349,10 +347,10 @@ docker-compose logs n8n
 - Clear chat history and start fresh
 
 ### Functions not working
-- Restart Open WebUI: `docker-compose restart open-webui`
+- Restart BrandFactory: `docker-compose restart brandfactory`
 - Check function syntax in `functions/n8n_integration.py`
 - Verify environment variables in `.env`
-- Check Open WebUI logs: `docker-compose logs -f open-webui`
+- Check BrandFactory logs: `docker-compose logs -f brandfactory`
 
 ### API key issues
 - Verify keys in `.env` file
@@ -374,9 +372,8 @@ docker-compose logs n8n
 
 ## Support Resources
 
-- Open WebUI Docs: https://docs.openwebui.com
+- BrandFactory GitHub: https://github.com/Kesaramb/open-webui-multi-agent
 - n8n Documentation: https://docs.n8n.io
-- GitHub Issues: https://github.com/open-webui/open-webui/issues
 
 ## Project Structure
 
