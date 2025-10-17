@@ -28,12 +28,19 @@ services:
       - key: N8N_API_KEY
         value: ""
 
-      # BrandFactory Branding Configuration
+      # BrandFactory Branding Configuration (Complete White-Label)
       - key: WEBUI_NAME
         value: "BrandFactory"
 
       - key: WEBUI_URL
-        value: ""  # Will be set by Render
+        value: "https://brandfactory.onrender.com"
+
+      - key: WEBUI_FAVICON_URL
+        value: "/brandfactory/brandfactory-logo.png"
+
+      # Database and data directory
+      - key: DATA_DIR
+        value: "/app/backend/data"
 
       # Open WebUI Configuration
       - key: WEBUI_SECRET_KEY
