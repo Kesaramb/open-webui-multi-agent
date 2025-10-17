@@ -1,14 +1,14 @@
-# 🚀 Quick Start - Your Multi-Agent Workspace
+# 🚀 Quick Start - BrandFactory Multi-Agent Workspace
 
-Your OpenAI API key has been configured! Let's get started.
+Your AI workspace is ready to deploy! Let's get started.
 
 ## ✅ What's Ready
 
-- ✓ OpenAI API configured
+- ✓ API configuration ready
 - ✓ 5 AI personas (Content Strategist, Creative Director, Social Media Manager, Video Producer, Data Analyst)
 - ✓ n8n webhook integration functions
 - ✓ Full configuration files
-- ✓ Docker setup (recommended)
+- ✓ Docker deployment ready
 
 ## 🎯 Recommended: Start with Docker
 
@@ -31,7 +31,7 @@ docker-compose ps
 ```
 
 This will start:
-- **Open WebUI** on http://localhost:8080
+- **BrandFactory** on http://localhost:8080
 - **n8n** on http://localhost:5678 (username: admin, password: changeme123)
 - **Ollama** for local models on http://localhost:11434
 
@@ -47,8 +47,8 @@ This will start:
 # View all logs
 docker-compose logs -f
 
-# View only Open WebUI logs
-docker-compose logs -f open-webui
+# View only BrandFactory logs
+docker-compose logs -f brandfactory
 
 # View n8n logs
 docker-compose logs -f n8n
@@ -62,25 +62,15 @@ docker-compose down
 
 ---
 
-## 🔧 Alternative: Manual Installation (if you prefer)
+## 🔧 Alternative: Deploy to Render
 
-If you want to try pip again with better timeout settings:
+The easiest way to deploy BrandFactory:
 
-```bash
-# Install with longer timeout
-pip install --timeout=1000 open-webui
-
-# OR try installing from source
-git clone https://github.com/open-webui/open-webui.git
-cd open-webui
-pip install -e .
-```
-
-Then start:
-```bash
-cd /Users/mac/Projects/open-webui-multi-agent
-./start.sh
-```
+1. Fork this repository to your GitHub account
+2. Connect to Render.com
+3. Deploy using the included `render.yaml` configuration
+4. Add your API keys in Render environment variables
+5. Access your live BrandFactory instance!
 
 ---
 

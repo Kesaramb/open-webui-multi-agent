@@ -1,6 +1,6 @@
 # 🏭 BrandFactory - AI-Powered Multi-Agent Workspace
 
-**BrandFactory** is your custom-branded AI workspace powered by Open WebUI, designed specifically for digital media companies.
+**BrandFactory** is your enterprise AI workspace designed specifically for digital media companies.
 
 ---
 
@@ -185,11 +185,10 @@ The agent will automatically trigger N8N workflows!
 ## 📞 Support
 
 - **GitHub Issues:** https://github.com/Kesaramb/open-webui-multi-agent/issues
-- **Open WebUI Docs:** https://docs.openwebui.com
 - **N8N Docs:** https://docs.n8n.io
 
 ---
 
 **Built with ❤️ for Digital Media Teams**
 
-*Powered by Open WebUI | Customized for BrandFactory*
+*BrandFactory - Enterprise AI Platform*

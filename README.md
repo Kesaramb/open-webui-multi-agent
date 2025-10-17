@@ -1,5 +1,5 @@
 # 🏭 BrandFactory - AI Multi-Agent Workspace
-## Powered by Open WebUI | Custom-Branded for Digital Media
+## Enterprise-Grade AI Platform for Digital Media
 
 **BrandFactory** is your fully configured multi-agent AI workspace designed for digital media operations.
 
@@ -25,32 +25,29 @@
   - Agent-to-agent communication
   - Workflow orchestration
 
-## Installation
+## Deployment
 
-### 1. Install Open WebUI
-
-```bash
-pip install open-webui
+**BrandFactory is deployed and ready to use at:**
+```
+https://brandfactory.onrender.com
 ```
 
-### 2. Configure Environment
+No installation required! Just visit the URL and start using your AI team.
+
+### For Development/Self-Hosting:
 
 ```bash
+# Clone the repository
+git clone https://github.com/Kesaramb/open-webui-multi-agent.git
+cd open-webui-multi-agent
+
+# Configure environment
 cp .env.template .env
-# Edit .env with your actual API keys and configuration
-```
+# Edit .env with your API keys
 
-### 3. Start Open WebUI
-
-```bash
-cd /Users/mac/Projects/open-webui-multi-agent
-open-webui serve --host 0.0.0.0 --port 8080
-```
-
-Or with custom config:
-
-```bash
-OPEN_WEBUI_CONFIG=config.yaml open-webui serve
+# Deploy with Docker
+docker build -t brandfactory .
+docker run -p 8080:8080 brandfactory
 ```
 
 ## n8n Integration Setup
@@ -179,7 +176,7 @@ Edit `config.yaml` and add new workflows under `multi_agent.workflows`.
 
 ### Adding Custom Functions
 
-Create new Python files in the `functions/` directory. Functions will be automatically detected by Open WebUI.
+Create new Python files in the `functions/` directory. Functions will be automatically detected by BrandFactory.
 
 ## API Access
 
@@ -213,15 +210,14 @@ curl http://localhost:8080/v1/chat/completions \
 
 - Ensure functions are in `functions/` directory
 - Check Python syntax
-- Restart Open WebUI after adding new functions
+- Restart BrandFactory after adding new functions
 
 ## Support
 
 For issues and questions:
-- Open WebUI Docs: https://docs.openwebui.com
-- Open WebUI GitHub: https://github.com/open-webui/open-webui
+- BrandFactory Issues: https://github.com/Kesaramb/open-webui-multi-agent/issues
 - n8n Documentation: https://docs.n8n.io
 
 ## License
 
-This configuration is provided as-is for use with Open WebUI.
+BrandFactory is provided under the MIT License.
