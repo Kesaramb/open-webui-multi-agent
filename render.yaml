@@ -28,7 +28,8 @@ services:
       - key: N8N_API_KEY
         value: ""
 
-      # BrandFactory Branding Configuration (Complete White-Label)
+      # BrandFactory Co-Branding Configuration (Legal CSS Customization)
+      # Note: Will display as "BrandFactory (Open WebUI)" - keeps Open WebUI attribution
       - key: WEBUI_NAME
         value: "BrandFactory"
 
