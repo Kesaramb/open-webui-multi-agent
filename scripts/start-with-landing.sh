@@ -7,10 +7,22 @@ set -e
 echo "🏭 BrandFactory Starting..."
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 
-# Start Open WebUI on port 3000 in background
-echo "🚀 Starting Open WebUI backend on port 3000..."
+# Set required environment variables for Open WebUI
 export PORT=3000
 export HOST=127.0.0.1
+
+# Generate WEBUI_SECRET_KEY if not set (Render sets this via render.yaml)
+if [ -z "$WEBUI_SECRET_KEY" ]; then
+    echo "⚠️  WEBUI_SECRET_KEY not set, generating random key..."
+    export WEBUI_SECRET_KEY=$(python3 -c "import secrets; print(secrets.token_hex(32))")
+fi
+
+# Ensure DATA_DIR exists
+export DATA_DIR=${DATA_DIR:-/app/backend/data}
+mkdir -p "$DATA_DIR"
+
+# Start Open WebUI on port 3000 in background
+echo "🚀 Starting Open WebUI backend on port 3000..."
 bash /app/backend/start.sh &
 OPENWEBUI_PID=$!
 
