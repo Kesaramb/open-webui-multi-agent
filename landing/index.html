@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BrandFactory - AI Multi-Agent Workspace</title>
+    <meta name="description" content="Enterprise AI-powered multi-agent workspace for digital media teams">
+    <link rel="icon" type="image/png" href="/brandfactory/brandfactory-logo.png">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .navbar {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .logo img {
+            width: 48px;
+            height: 48px;
+            border-radius: 8px;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .btn-primary {
+            background: #fff;
+            color: #667eea;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.2);
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .hero {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            font-weight: 800;
+            line-height: 1.2;
+        }
+
+        .hero h2 {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+            font-weight: 400;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+            width: 100%;
+        }
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 2rem;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .feature-card h3 {
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .feature-card p {
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+
+        .cta-section {
+            margin-top: 3rem;
+        }
+
+        .cta-section .btn-primary {
+            padding: 1rem 3rem;
+            font-size: 1.25rem;
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem;
+            background: rgba(0, 0, 0, 0.2);
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero h2 {
+                font-size: 1.25rem;
+            }
+
+            .features {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <img src="/brandfactory/brandfactory-logo.png" alt="BrandFactory Logo">
+            <span>BrandFactory</span>
+        </div>
+        <div class="nav-buttons">
+            <a href="/workspace" class="btn btn-secondary">Sign In</a>
+            <a href="/workspace" class="btn btn-primary">Get Started</a>
+        </div>
+    </nav>
+
+    <main class="hero">
+        <h1>AI-Powered Multi-Agent Workspace</h1>
+        <h2>Transform your digital media workflow with specialized AI agents</h2>
+
+        <div class="features">
+            <div class="feature-card">
+                <div class="feature-icon">👔</div>
+                <h3>Content Strategist</h3>
+                <p>Content planning, SEO optimization, and editorial calendars powered by AI</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">🎨</div>
+                <h3>Creative Director</h3>
+                <p>Visual storytelling, brand consistency, and creative campaign development</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">📱</div>
+                <h3>Social Media Manager</h3>
+                <p>Multi-platform strategies, community engagement, and trend analysis</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">🎬</div>
+                <h3>Video Producer</h3>
+                <p>Video production planning, scripting, and platform optimization</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">📊</div>
+                <h3>Data Analyst</h3>
+                <p>Performance metrics, insights generation, and ROI tracking</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">🔗</div>
+                <h3>N8N Integration</h3>
+                <p>Workflow automation, webhook triggers, and seamless integrations</p>
+            </div>
+        </div>
+
+        <div class="cta-section">
+            <a href="/workspace" class="btn btn-primary">Launch Workspace →</a>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 BrandFactory. Enterprise AI Platform for Digital Media Teams.</p>
+    </footer>
+
+    <script>
+        // Optional: Add smooth animations on load
+        document.addEventListener('DOMContentLoaded', () => {
+            const cards = document.querySelectorAll('.feature-card');
+            cards.forEach((card, index) => {
+                setTimeout(() => {
+                    card.style.opacity = '0';
+                    card.style.transform = 'translateY(20px)';
+                    card.style.transition = 'all 0.5s ease';
+                    setTimeout(() => {
+                        card.style.opacity = '1';
+                        card.style.transform = 'translateY(0)';
+                    }, 50);
+                }, index * 100);
+            });
+        });
+    </script>
+</body>
+</html>
