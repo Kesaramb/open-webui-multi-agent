@@ -38,6 +38,9 @@ RUN mkdir -p /var/log/nginx /var/lib/nginx /var/cache/nginx /run && \
 RUN mkdir -p /app/backend/data && \
     chown -R 1000:1000 /app/backend/data
 
+# Fix permissions for Open WebUI static files (needs write access for customization)
+RUN chown -R 1000:1000 /app/backend/open_webui/static
+
 # Switch back to non-root user
 USER 1000:1000
 
