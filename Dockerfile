@@ -34,6 +34,10 @@ RUN mkdir -p /var/log/nginx /var/lib/nginx /var/cache/nginx /run && \
     touch /run/nginx.pid && \
     chown 1000:1000 /run/nginx.pid
 
+# Create data directory with correct permissions (for Render disk mount)
+RUN mkdir -p /app/backend/data && \
+    chown -R 1000:1000 /app/backend/data
+
 # Switch back to non-root user
 USER 1000:1000
 

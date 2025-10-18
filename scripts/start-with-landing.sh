@@ -17,9 +17,9 @@ if [ -z "$WEBUI_SECRET_KEY" ]; then
     export WEBUI_SECRET_KEY=$(python3 -c "import secrets; print(secrets.token_hex(32))")
 fi
 
-# Ensure DATA_DIR exists
+# Set DATA_DIR (directory created in Dockerfile with correct permissions)
 export DATA_DIR=${DATA_DIR:-/app/backend/data}
-mkdir -p "$DATA_DIR"
+echo "📂 Using data directory: $DATA_DIR"
 
 # Start Open WebUI on port 3000 in background
 echo "🚀 Starting Open WebUI backend on port 3000..."
