@@ -28,8 +28,8 @@ services:
       - key: N8N_API_KEY
         value: ""
 
-      # BrandFactory Co-Branding Configuration (Legal CSS Customization)
-      # Note: Will display as "BrandFactory (Open WebUI)" - keeps Open WebUI attribution
+      # BrandFactory Branding Configuration (Landing Page Approach)
+      # Note: Landing page shows 100% BrandFactory, workspace shows Open WebUI
       - key: WEBUI_NAME
         value: "BrandFactory"
 
