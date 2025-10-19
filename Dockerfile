@@ -15,7 +15,8 @@ RUN apt-get update && \
 # Install additional Python packages for tools
 RUN pip install --no-cache-dir \
     langchain-yt-dlp \
-    langchain-community
+    langchain-community \
+    yt-dlp
 
 # Copy custom functions
 COPY --chown=1000:1000 functions/ /app/backend/functions/
