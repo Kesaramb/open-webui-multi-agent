@@ -12,6 +12,11 @@ RUN apt-get update && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
+# Install additional Python packages for tools
+RUN pip install --no-cache-dir \
+    langchain-yt-dlp \
+    langchain-community
+
 # Copy custom functions
 COPY --chown=1000:1000 functions/ /app/backend/functions/
 
