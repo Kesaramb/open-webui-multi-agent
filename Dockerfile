@@ -22,7 +22,9 @@ RUN pip install --no-cache-dir \
     langchain-yt-dlp \
     langchain-community \
     yt-dlp \
-    duckduckgo-search
+    duckduckgo-search \
+    requests \
+    beautifulsoup4
 
 # Copy custom functions
 COPY --chown=1000:1000 functions/ /app/backend/functions/
