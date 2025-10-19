@@ -12,11 +12,17 @@ RUN apt-get update && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
+# Copy BrandFactory logo files for favicon customization
+COPY --chown=1000:1000 static/favicon.png /app/build/static/favicon.png
+COPY --chown=1000:1000 static/favicon-32x32.png /app/build/static/favicon-32x32.png
+COPY --chown=1000:1000 static/brandfactory-logo.png /app/build/static/brandfactory-logo.png
+
 # Install additional Python packages for tools
 RUN pip install --no-cache-dir \
     langchain-yt-dlp \
     langchain-community \
-    yt-dlp
+    yt-dlp \
+    duckduckgo-search
 
 # Copy custom functions
 COPY --chown=1000:1000 functions/ /app/backend/functions/
