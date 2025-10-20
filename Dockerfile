@@ -6,9 +6,11 @@ FROM ghcr.io/open-webui/open-webui:main
 # Switch to root for installations
 USER root
 
-# Install nginx for reverse proxy (Open WebUI uses Debian/Ubuntu base)
+# Install nginx and Node.js for React landing page build
 RUN apt-get update && \
-    apt-get install -y --no-install-recommends nginx && \
+    apt-get install -y --no-install-recommends nginx curl && \
+    curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
+    apt-get install -y nodejs && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
@@ -34,6 +36,11 @@ COPY --chown=1000:1000 static/ /app/backend/static/brandfactory/
 
 # Copy landing page
 COPY --chown=1000:1000 landing/ /app/landing/
+
+# Build React landing page
+RUN cd /app/landing/react-landing && \
+    npm ci --silent && \
+    npm run build
 
 # Copy nginx configuration
 COPY nginx.conf /etc/nginx/nginx.conf
