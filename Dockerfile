@@ -37,10 +37,12 @@ COPY --chown=1000:1000 static/ /app/backend/static/brandfactory/
 # Copy landing page
 COPY --chown=1000:1000 landing/ /app/landing/
 
-# Build React landing page
+# Build React landing page (with proper error handling)
 RUN cd /app/landing/react-landing && \
-    npm ci --silent && \
-    npm run build
+    npm ci && \
+    npm run build && \
+    ls -la ../dist/ && \
+    echo "✅ React build completed successfully"
 
 # Copy nginx configuration
 COPY nginx.conf /etc/nginx/nginx.conf
