@@ -41,7 +41,7 @@ const Nav = () => {
     <div className={`sticky top-0 z-50 w-full transition-all ${scrolled ? "bg-black/70 backdrop-blur border-b border-white/10" : "bg-transparent"}`}>
       <Section className="flex items-center justify-between py-3">
         <a href="#home" className="flex items-center gap-2">
-          <img src="/logo.jpg" alt="BrandFactory" className="h-8 w-auto rounded" />
+          <div className="h-7 w-7 rounded-lg bg-gradient-to-br from-cyan-500 to-emerald-400"/>
           <span className="font-semibold tracking-tight text-white">BrandFactory</span>
         </a>
         <nav className="hidden items-center gap-6 text-sm text-white/80 md:flex">
