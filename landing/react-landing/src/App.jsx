@@ -41,7 +41,7 @@ const Nav = () => {
     <div className={`sticky top-0 z-50 w-full transition-all ${scrolled ? "bg-black/70 backdrop-blur border-b border-white/10" : "bg-transparent"}`}>
       <Section className="flex items-center justify-between py-3">
         <a href="#home" className="flex items-center gap-2">
-          <div className="h-7 w-7 rounded-lg bg-gradient-to-br from-cyan-500 to-emerald-400"/>
+          <img src="/logo.jpg" alt="BrandFactory" className="h-8 w-auto rounded" />
           <span className="font-semibold tracking-tight text-white">BrandFactory</span>
         </a>
         <nav className="hidden items-center gap-6 text-sm text-white/80 md:flex">
@@ -132,20 +132,16 @@ export default function BrandFactoryLanding() {
         </div>
         <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {[{
-            icon: "💡",
             title: "Creative Autonomy",
             desc: "Humans remain the architects — AI expands every path from one insight.",
           },{
-            icon: "🕹️",
             title: "Cognitive Leverage",
             desc: "1 hour of deep work now returns 10 hours of traditional output.",
           },{
-            icon: "🌊",
             title: "Seamless Flow Systems",
             desc: "Writing, design, and automation connected into a single stream.",
-          }].map(({icon, title, desc}) => (
+          }].map(({title, desc}) => (
             <div key={title} className="rounded-2xl border border-white/10 bg-white/5 p-6">
-              <div className="text-3xl">{icon}</div>
               <h4 className="mt-3 text-lg font-semibold">{title}</h4>
               <p className="mt-1 text-sm text-white/70">{desc}</p>
             </div>
@@ -203,7 +199,6 @@ export default function BrandFactoryLanding() {
         <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {["Research Maven","SERP Sensei","Storycrafter","Canvasmatic Designer","Autoposter","A/B Orchestrator","Sponsorship Scout","Revenue Mapper"].map((name) => (
             <div key={name} className="rounded-2xl border border-white/10 bg-white/5 p-5">
-              <div className="text-2xl">🤖</div>
               <h4 className="mt-2 font-semibold">{name}</h4>
               <p className="mt-1 text-xs text-white/70">Plug-and-play worker that learns from outcomes and feeds the memory graph.</p>
             </div>
@@ -307,7 +302,7 @@ export default function BrandFactoryLanding() {
       <footer className="border-t border-white/10">
         <Section className="flex flex-col items-start justify-between gap-6 py-10 md:flex-row md:items-center">
           <div className="flex items-center gap-2">
-            <div className="h-7 w-7 rounded-lg bg-gradient-to-br from-cyan-500 to-emerald-400"/>
+            <img src="/logo.jpg" alt="BrandFactory" className="h-8 w-auto rounded" />
             <span className="font-semibold tracking-tight text-white">BrandFactory</span>
           </div>
           <p className="text-sm text-white/60">Insight → Structure → System → Income.</p>
