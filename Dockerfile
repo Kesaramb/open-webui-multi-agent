@@ -67,6 +67,9 @@ RUN chown -R 1000:1000 /app/backend/open_webui/static
 # Switch back to non-root user
 USER 1000:1000
 
+# Set custom branding
+ENV WEBUI_NAME="BrandFactory OS"
+
 # Expose port 8080 (nginx listens here, proxies to Open WebUI on 3000)
 EXPOSE 8080
 
