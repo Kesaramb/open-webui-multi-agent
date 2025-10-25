@@ -24,6 +24,7 @@ RUN pip install --no-cache-dir \
     langchain-yt-dlp \
     langchain-community \
     yt-dlp \
+    youtube-transcript-api \
     duckduckgo-search \
     requests \
     beautifulsoup4
