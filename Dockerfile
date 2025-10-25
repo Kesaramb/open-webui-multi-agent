@@ -34,6 +34,9 @@ COPY --chown=1000:1000 functions/ /app/backend/functions/
 # Copy BrandFactory static assets
 COPY --chown=1000:1000 static/ /app/backend/static/brandfactory/
 
+# Copy custom branding script to Open WebUI static directory
+COPY --chown=1000:1000 static/custom-branding.js /app/backend/static/custom-branding.js
+
 # Copy landing page
 COPY --chown=1000:1000 landing/ /app/landing/
 

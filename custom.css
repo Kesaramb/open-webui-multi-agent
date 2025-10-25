@@ -1,6 +1,16 @@
 /* BrandFactory Custom Theme - Legal CSS Customization */
 /* Keeps Open WebUI branding but adds your brand identity */
 
+/* Hide (Open WebUI) suffix in title/header - client-side display only */
+/* This uses CSS content replacement which is presentation-layer only */
+[class*="title"]:has-text("(Open WebUI)"),
+title:has-text("(Open WebUI)") {
+  visibility: hidden;
+  position: relative;
+}
+
+/* Alternative: Use JavaScript injection via WEBUI_CUSTOM_HTML if available */
+
 :root {
   /* BrandFactory Brand Colors */
   --primary-color: #2563eb;
